@@ -1,32 +1,32 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 40px;
   background: #f5f9f7;
 }
-
-h1 {
-  color: #2d6a4f;
+h2 {
+  color: green;
 }
-
-button {
-  padding: 8px 14px;
-  margin: 5px;
-  border: none;
-  background: #40916c;
+.bin {
+  margin: 15px 0;
+}
+.progress {
+  width: 300px;
+  height: 20px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  text-align: center;
+  line-height: 20px;
   color: white;
-  border-radius: 5px;
-  cursor: pointer;
 }
-
-button:hover {
-  background: #2d6a4f;
+.bio { background-color: seagreen; }
+.recycle { background-color: steelblue; }
+.hazard { background-color: firebrick; }
+#message {
+  margin-top: 20px;
+  font-weight: bold;
 }
-
-#batch, #bins, #log {
-  margin-top: 15px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background: white;
-  border-radius: 5px;
-}
-
