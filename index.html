@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>♻️ Waste Management Simulator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <h1>♻️ Waste Management Simulator</h1>
+
+  <div class="controls">
+    <button onclick="generateBatch()">Generate Batch</button>
+    <button onclick="resetSystem()">Reset System</button>
+  </div>
+
+  <div class="batch">
+    <h2>Generated Batch</h2>
+    <div id="batchContainer"></div>
+    <button onclick="processBatch()">Process Batch</button>
+  </div>
+
+  <div class="bins">
+    <h2>Waste Bins</h2>
+    <div id="bins"></div>
+  </div>
+
+  <div class="log">
+    <h2>Processing Log</h2>
+    <pre id="log"></pre>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
