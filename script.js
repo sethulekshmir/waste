@@ -1,70 +1,54 @@
-async function fetchBins() {
-  const res = await fetch("/api/bins");
-  const data = await res.json();
-  const binsDiv = document.getElementById("bins");
-  binsDiv.innerHTML = "";
+const BIN_CAPACITY = 20;
+const bins = { biodegradable: 0, recyclable: 0, hazardous: 0 };
 
-  for (const [type, items] of Object.entries(data)) {
-    const div = document.createElement("div");
-    div.className = "bin";
-    div.innerHTML = `<h3>${type}</h3><p>${items.join(", ") || "Empty"}</p>
-                     <button onclick="dequeueItem('${type}')">Dequeue</button>`;
-    binsDiv.appendChild(div);
+const sizeUnits = { small: 1, medium: 2, large: 3 };
+const wasteClassification = {
+  organic: "biodegradable",
+  paper: "biodegradable",
+  plastic: "recyclable",
+  metal: "recyclable",
+  glass: "recyclable",
+  chemical: "hazardous"
+};
+
+document.getElementById("wasteForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const size = document.getElementById("wasteSize").value;
+  const material = document.getElementById("wasteMaterial").value;
+
+  if (!(size in sizeUnits) || !(material in wasteClassification)) {
+    showMessage("❌ Invalid input", "red");
+    return;
   }
+
+  const binType = wasteClassification[material];
+  const units = sizeUnits[size];
+
+  if (bins[binType] + units <= BIN_CAPACITY) {
+    bins[binType] += units;
+    showMessage(`✅ Added ${units} units of ${material} to ${binType} bin`, "green");
+  } else {
+    showMessage(`⚠️ ${capitalize(binType)} bin is full!`, "orange");
+  }
+  updateBins();
+});
+
+function updateBins() {
+  document.getElementById("bioCount").innerText = bins.biodegradable;
+  document.getElementById("recycleCount").innerText = bins.recyclable;
+  document.getElementById("hazardCount").innerText = bins.hazardous;
+
+  document.getElementById("bioBar").style.width = (bins.biodegradable / BIN_CAPACITY * 100) + "%";
+  document.getElementById("recycleBar").style.width = (bins.recyclable / BIN_CAPACITY * 100) + "%";
+  document.getElementById("hazardBar").style.width = (bins.hazardous / BIN_CAPACITY * 100) + "%";
 }
 
-async function fetchLog() {
-  const res = await fetch("/api/log");
-  const data = await res.json();
-  document.getElementById("log").textContent = data.log.join("\n");
+function showMessage(msg, color) {
+  const m = document.getElementById("message");
+  m.innerText = msg;
+  m.style.color = color;
 }
 
-async function generateBatch() {
-  const res = await fetch("/api/generate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ n: 8 })
-  });
-  const data = await res.json();
-  const container = document.getElementById("batchContainer");
-  container.innerHTML = data.batch.map(item => `<span>${item}</span>`).join(" ");
-  container.dataset.items = JSON.stringify(data.batch);
-  fetchLog();
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
-async function processBatch() {
-  const container = document.getElementById("batchContainer");
-  const items = JSON.parse(container.dataset.items || "[]");
-  if (items.length === 0) return alert("No batch to process!");
-
-  await fetch("/api/process", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ items })
-  });
-  container.innerHTML = "";
-  container.dataset.items = "[]";
-  fetchBins();
-  fetchLog();
-}
-
-async function dequeueItem(type) {
-  await fetch(`/api/dequeue/${type}`, { method: "POST" });
-  fetchBins();
-  fetchLog();
-}
-
-async function resetSystem() {
-  await fetch("/api/reset", { method: "POST" });
-  document.getElementById("batchContainer").innerHTML = "";
-  fetchBins();
-  fetchLog();
-}
-
-setInterval(() => {
-  fetchBins();
-  fetchLog();
-}, 2000);
-
-fetchBins();
-fetchLog();
