@@ -2,29 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>♻ Waste Segregation Queue System</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>♻️ Smart Waste Sorting Simulator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>♻ Waste Segregation Queue System</h2>
 
-  <div id="queue-box">
-    <h3>Queue:</h3>
-    <p id="queue">[empty]</p>
+  <header>
+    ♻️ Smart Waste Sorting Simulator
+  </header>
+
+  <div class="container">
+
+    <!-- Queue Section -->
+    <section>
+      <h2>🚮 Waste Queue</h2>
+      <div id="queue">Queue is empty</div>
+    </section>
+
+    <!-- Control Buttons -->
+    <section>
+      <button onclick="addWaste()">➕ Add Random Waste</button>
+      <button onclick="processWaste()">⚡ Process Next Waste</button>
+    </section>
+
+    <!-- Bins Section -->
+    <section>
+      <h2>🗑️ Bins</h2>
+      <ul id="bins">
+        <li>Biodegradable: <span id="bioCount">0</span></li>
+        <li>Recyclable: <span id="recycleCount">0</span></li>
+        <li>Hazardous: <span id="hazardCount">0</span></li>
+      </ul>
+    </section>
+
+    <!-- Activity Log -->
+    <section>
+      <h2>📜 Activity Log</h2>
+      <div id="log"></div>
+    </section>
+
   </div>
 
-  <div class="buttons">
-    <button onclick="generateWaste()">➕ Generate Waste</button>
-    <button onclick="processWaste()">⚙ Process Waste</button>
-    <button onclick="resetSystem()">🔄 Reset</button>
-  </div>
+  <footer>
+    Made with ❤️ using Queue Data Structure
+  </footer>
 
-  <h3>Bin Status:</h3>
-  <ul id="bins"></ul>
-
-  <h3>Log:</h3>
-  <div id="log"></div>
-
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="script.js"></script>
 </body>
 </html>
