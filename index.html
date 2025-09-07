@@ -3,31 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>♻️ Waste Management Simulator</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>♻️ Waste Management Simulator</h1>
+  <h2>♻️ Smart Waste Sorting</h2>
 
-  <div class="controls">
-    <button onclick="generateBatch()">Generate Batch</button>
-    <button onclick="resetSystem()">Reset System</button>
+  <form id="wasteForm">
+    <label for="wasteSize">Size of Waste:</label>
+    <select id="wasteSize" required>
+      <option value="small">Small</option>
+      <option value="medium">Medium</option>
+      <option value="large">Large</option>
+    </select>
+    <br><br>
+
+    <label for="wasteMaterial">Material Type:</label>
+    <select id="wasteMaterial" required>
+      <option value="organic">Organic (food, leaves)</option>
+      <option value="plastic">Plastic</option>
+      <option value="metal">Metal</option>
+      <option value="glass">Glass</option>
+      <option value="paper">Paper</option>
+      <option value="chemical">Chemical (batteries, paint)</option>
+    </select>
+    <br><br>
+
+    <button type="submit">Add Waste</button>
+  </form>
+
+  <h3>Bin Status:</h3>
+  <div class="bin">
+    Biodegradable Bin: <span id="bioCount">0</span>/20
+    <div class="progress"><div class="progress-fill bio" id="bioBar"></div></div>
+  </div>
+  <div class="bin">
+    Recyclable Bin: <span id="recycleCount">0</span>/20
+    <div class="progress"><div class="progress-fill recycle" id="recycleBar"></div></div>
+  </div>
+  <div class="bin">
+    Hazardous Bin: <span id="hazardCount">0</span>/20
+    <div class="progress"><div class="progress-fill hazard" id="hazardBar"></div></div>
   </div>
 
-  <div class="batch">
-    <h2>Generated Batch</h2>
-    <div id="batchContainer"></div>
-    <button onclick="processBatch()">Process Batch</button>
-  </div>
-
-  <div class="bins">
-    <h2>Waste Bins</h2>
-    <div id="bins"></div>
-  </div>
-
-  <div class="log">
-    <h2>Processing Log</h2>
-    <pre id="log"></pre>
-  </div>
+  <p id="message"></p>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
